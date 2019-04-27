@@ -12,13 +12,33 @@ class ControlButtons extends Component {
     this.state = {
       typeGradient: 'linear',
       orientationGradient: 'top',
-      ColorA: {hex: '#7ACF4C'},
-      ColorB: {hex: '#44069B'},
-      outputFormat: 'Hex',
+      ColorA: {
+        hex: '#7ACF4C',
+        rgb: {
+          a: 1,
+          b: 76,
+          g: 207,
+          r: 122
+        }
+      },
+      ColorB: {
+        hex: '#44069B',
+        rgb: {
+          a: 1,
+          b: 155,
+          g: 6,
+          r: 68
+        }
+      },
+      outputFormat: 'hex',
       cssString: '',
       showingColorA: false,
       showingColorB: false
     };
+  }
+
+  componentDidMount() {
+    this.props.changeCss(this.state);
   }
 
   async setGradientParameter(modifier, value) {
@@ -51,13 +71,13 @@ class ControlButtons extends Component {
 
   render() {
     const orientationsChunk = this.chunkButtons();
-    const orientationButtons = orientationsChunk.map(orientationGroup => {
-      let buttons = orientationGroup.map(orientation =>(
-        <div className="col-4">
-          <button className="btn btn-light btn-block" key={orientation} type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
+    const orientationButtons = orientationsChunk.map((orientationGroup, oIndex) => {
+      let buttons = orientationGroup.map((orientation) =>(
+        <div className="col-4" key={orientation}>
+          <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
         </div>
       ));
-      return (<div className="row mt-3">
+      return (<div className="row mt-3" key={oIndex}>
         {buttons}
       </div>);
     });
@@ -98,10 +118,10 @@ class ControlButtons extends Component {
         </div>
         <div className="type row mt-3">
           <div className="col-6">
-            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "hex")}>Linear</button>
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "hex")}>Hex</button>
           </div>
           <div className="col-6">
-            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "rgb")}>Radial</button>
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "rgb")}>RGBa</button>
           </div>
         </div>
       </div>

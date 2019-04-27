@@ -10,10 +10,10 @@ function App() {
     <Provider store={store}>
     <div className="container-fluid h-100">
         <div className="row h-100">
-          <div className="col-6 h-100">
+          <div className="col-5 h-100">
             <ControlButtons/>
           </div>
-          <div className="col-6 h-100">
+          <div className="col-7 h-100">
             <GradientContent/>
           </div>
         </div>
