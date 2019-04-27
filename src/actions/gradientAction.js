@@ -7,7 +7,8 @@ export const changeCss = (gradientObj) => async dispatch => {
   gradientService.changeCss(gradientObj);
   dispatch({
     type: CHANGE_CSS,
-    payload: gradientService.getCss()
+    payload: gradientService.getCss(),
+    template: gradientObj
   })
 }
 

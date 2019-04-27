@@ -1,39 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changeCss } from '../../actions/gradientAction';
-import ORIENTATIONS from './orientationActions';
+import { ORIENTATIONS, defaultGridConfig } from './gradientTypes';
 import { SketchPicker } from 'react-color';
+import GradientTemplate from '../GradienTemplate/GradientTemplate';
 import './ControlButtons.scss';
 
 class ControlButtons extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      typeGradient: 'linear',
-      orientationGradient: 'top',
-      ColorA: {
-        hex: '#7ACF4C',
-        rgb: {
-          a: 1,
-          b: 76,
-          g: 207,
-          r: 122
-        }
-      },
-      ColorB: {
-        hex: '#44069B',
-        rgb: {
-          a: 1,
-          b: 155,
-          g: 6,
-          r: 68
-        }
-      },
-      outputFormat: 'hex',
-      cssString: '',
-      showingColorA: false,
-      showingColorB: false
-    };
+    this.state = defaultGridConfig;
   }
 
   componentDidMount() {
@@ -70,7 +46,7 @@ class ControlButtons extends Component {
     const orientationsChunk = this.chunkButtons();
     const orientationButtons = orientationsChunk.map((orientationGroup, oIndex) => {
       let buttons = orientationGroup.map((orientation) => {
-        let button = (orientation != "center" || this.state.typeGradient != 'linear') ?
+        let button = (orientation !== "center" || this.state.typeGradient !== 'linear') ?
           (<button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>):
           (<span></span>);
           return (<div className="col-4" key={orientation}>
@@ -123,6 +99,9 @@ class ControlButtons extends Component {
           <div className="col-6">
             <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "rgb")}>RGBa</button>
           </div>
+        </div>
+        <div className="gradient-template row mt-3">
+              <GradientTemplate/>
         </div>
       </div>
     )
