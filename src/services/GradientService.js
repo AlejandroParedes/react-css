@@ -4,6 +4,7 @@ export default class GradientService {
   }
 
   changeCss(gradientObj) {
+    console.log(gradientObj);
     return;
   }
 }

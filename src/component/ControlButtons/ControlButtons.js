@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCss } from '../../actions/gradientAction';
 import { changeCss } from '../../actions/gradientAction';
+import ORIENTATIONS from './orientationActions';
 
 class ControlButtons extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class ControlButtons extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
   }
 
   async setGradientParameter(modifier, value) {
@@ -25,16 +27,18 @@ class ControlButtons extends Component {
   }
 
   render() {
+    const orientationButtons = ORIENTATIONS.map(orientation => (
+      <button key={orientation} type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
+    ));
     return (
       <div>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "top left")}>top left</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "top")}>top</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "top right")}>top right</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "left")}>left</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "right")}>right</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "bottom left")}>bottom left</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "bottom")}>bottom</button>
-        <button type="button" onClick={() => this.setGradientParameter("orientationGradient", "bottom right")}>bottom right</button>
+        <div className="style">
+          <button type="button" onClick={() => this.setGradientParameter("typeGradient", "linear")}>Linear</button>
+          <button type="button" onClick={() => this.setGradientParameter("typeGradient", "radial")}>Radial</button>
+        </div>
+        <div className="orientation">
+          {orientationButtons}
+        </div>
       </div>
     )
   }
