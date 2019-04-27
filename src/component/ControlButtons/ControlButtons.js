@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCss } from '../../actions/gradientAction';
 import { changeCss } from '../../actions/gradientAction';
 import ORIENTATIONS from './orientationActions';
 import { SketchPicker } from 'react-color';
@@ -57,14 +56,12 @@ class ControlButtons extends Component {
   };
 
   chunkButtons = () => {
-    let i,
-        j,
-        temparray,
+    let initial,
+        total,
         chunk = 3,
         orientationChunk = [];
-    for (i=0,j=ORIENTATIONS.length; i<j; i+=chunk) {
-        orientationChunk.push(ORIENTATIONS.slice(i,i+chunk));
-        // do whatever
+    for (initial=0,total=ORIENTATIONS.length; initial<total; initial+=chunk) {
+        orientationChunk.push(ORIENTATIONS.slice(initial,initial+chunk));
     }
     return orientationChunk;
   }
@@ -72,11 +69,14 @@ class ControlButtons extends Component {
   render() {
     const orientationsChunk = this.chunkButtons();
     const orientationButtons = orientationsChunk.map((orientationGroup, oIndex) => {
-      let buttons = orientationGroup.map((orientation) =>(
-        <div className="col-4" key={orientation}>
-          <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
-        </div>
-      ));
+      let buttons = orientationGroup.map((orientation) => {
+        let button = (orientation != "center" || this.state.typeGradient != 'linear') ?
+          (<button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>):
+          (<span></span>);
+          return (<div className="col-4" key={orientation}>
+            {button}
+          </div>)
+      });
       return (<div className="row mt-3" key={oIndex}>
         {buttons}
       </div>);

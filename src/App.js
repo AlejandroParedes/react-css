@@ -8,7 +8,7 @@ import store from './store';
 function App() {
   return (
     <Provider store={store}>
-    <div className="container-fluid h-100">
+    <div className="container-fluid h-100 pt-3">
         <div className="row h-100">
           <div className="col-5 h-100">
             <ControlButtons/>
