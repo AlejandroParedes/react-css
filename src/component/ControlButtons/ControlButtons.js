@@ -4,6 +4,7 @@ import { getCss } from '../../actions/gradientAction';
 import { changeCss } from '../../actions/gradientAction';
 import ORIENTATIONS from './orientationActions';
 import { SketchPicker } from 'react-color';
+import './ControlButtons.scss';
 
 class ControlButtons extends Component {
   constructor(props) {
@@ -18,10 +19,6 @@ class ControlButtons extends Component {
       showingColorA: false,
       showingColorB: false
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
   }
 
   async setGradientParameter(modifier, value) {
@@ -39,10 +36,31 @@ class ControlButtons extends Component {
     this.setGradientParameter(color, colorObj);
   };
 
+  chunkButtons = () => {
+    let i,
+        j,
+        temparray,
+        chunk = 3,
+        orientationChunk = [];
+    for (i=0,j=ORIENTATIONS.length; i<j; i+=chunk) {
+        orientationChunk.push(ORIENTATIONS.slice(i,i+chunk));
+        // do whatever
+    }
+    return orientationChunk;
+  }
+
   render() {
-    const orientationButtons = ORIENTATIONS.map(orientation => (
-      <button key={orientation} type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
-    ));
+    const orientationsChunk = this.chunkButtons();
+    const orientationButtons = orientationsChunk.map(orientationGroup => {
+      let buttons = orientationGroup.map(orientation =>(
+        <div className="col-4">
+          <button className="btn btn-light btn-block" key={orientation} type="button" onClick={() => this.setGradientParameter("orientationGradient", orientation)}>{orientation}</button>
+        </div>
+      ));
+      return (<div className="row mt-3">
+        {buttons}
+      </div>);
+    });
     let background = {
       colorA: {
         backgroundColor: this.state.ColorA.hex
@@ -53,22 +71,38 @@ class ControlButtons extends Component {
     }
     return (
       <div>
-        <div className="style">
-          <button type="button" onClick={() => this.setGradientParameter("typeGradient", "linear")}>Linear</button>
-          <button type="button" onClick={() => this.setGradientParameter("typeGradient", "radial")}>Radial</button>
+        <div className="style row">
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("typeGradient", "linear")}>Linear</button>
+          </div>
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("typeGradient", "radial")}>Radial</button>
+          </div>
         </div>
         <div className="orientation">
           {orientationButtons}
         </div>
-        <div className="style">
-          <button type="button" onClick={() => this.showColorPicker("ColorA")} style={background.colorA}>first color</button>
-          {this.state.showingColorA ? <SketchPicker
-            color={ this.state.ColorA.hex }
-            onChangeComplete={ (colorObj) => this.onChangeColor(colorObj, 'ColorA') }/>: <div/>}
-          <button type="button" onClick={() => this.showColorPicker("ColorB")} style={background.colorB}>Second Color</button>
-          {this.state.showingColorB ? <SketchPicker
-            color={ this.state.ColorB.hex }
-            onChangeComplete={ (colorObj) => this.onChangeColor(colorObj, 'ColorB') }/>: <div/>}
+        <div className="style row mt-3">
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.showColorPicker("ColorA")} style={background.colorA}>first color</button>
+            {this.state.showingColorA ? <SketchPicker
+              color={ this.state.ColorA.hex }
+              onChangeComplete={ (colorObj) => this.onChangeColor(colorObj, 'ColorA') }/>: <div/>}
+          </div>
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.showColorPicker("ColorB")} style={background.colorB}>Second Color</button>
+            {this.state.showingColorB ? <SketchPicker
+              color={ this.state.ColorB.hex }
+              onChangeComplete={ (colorObj) => this.onChangeColor(colorObj, 'ColorB') }/>: <div/>}
+          </div>
+        </div>
+        <div className="type row mt-3">
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "hex")}>Linear</button>
+          </div>
+          <div className="col-6">
+            <button className="btn btn-light btn-block" type="button" onClick={() => this.setGradientParameter("outputFormat", "rgb")}>Radial</button>
+          </div>
         </div>
       </div>
     )

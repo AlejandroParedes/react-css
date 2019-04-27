@@ -3,6 +3,7 @@ const ORIENTATIONS = [
   "top",
   "top right",
   "left",
+  "center",
   "right",
   "bottom left",
   "bottom",
